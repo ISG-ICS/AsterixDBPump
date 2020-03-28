@@ -114,7 +114,7 @@ class PumpManager:
 
     @staticmethod
     def persist_to_disk(data: List[str], out):
-        with open(out, 'w+') as file:
+        with open(out, 'a+') as file:
             for each in data:
                 file.write(each)
 
