@@ -92,7 +92,12 @@ class PumpManager:
         data = {
             "statement": sql,
             "format": "application/x-adm"}
-        r = requests.post(asterixdb_url, data=urllib.parse.urlencode(data), headers=headers)
+
+        proxies = {
+            'http': config['general']['proxy']
+        } if config['general']['proxy'] else {}
+
+        r = requests.post(asterixdb_url, data=urllib.parse.urlencode(data), headers=headers, proxies=proxies)
         if r.status_code != 200:
             raise AsterixDBError(f"AsterixDB returned non 200 response: {r.status_code}, {r.content}")
         return json.loads(r.content).get('results')

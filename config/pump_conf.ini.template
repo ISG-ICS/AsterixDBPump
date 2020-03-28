@@ -47,3 +47,6 @@ clean_history = False
 # if need to save a copy to persistence_path
 persist_to_disk = True
 persistence_path = persistence/data.adm
+
+# proxy if needed
+proxy =
