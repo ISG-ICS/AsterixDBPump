@@ -71,6 +71,7 @@ class PumpManager:
                 self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
                 self.last_update_time = self.update_time
                 self.update_time = period_end_time
+                self.last_update_count = self.update_count
                 self.update_count += len(data)
                 logging.info(self)
                 start_time = self.update_time
