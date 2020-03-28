@@ -50,3 +50,6 @@ persistence_path = persistence/data.adm
 
 # proxy if needed
 proxy =
+
+# delay before start if needed
+delay =

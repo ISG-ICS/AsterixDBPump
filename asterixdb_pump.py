@@ -6,6 +6,7 @@ import re
 import shelve
 import urllib.parse
 from datetime import datetime, timedelta
+from time import sleep
 from typing import List
 
 import requests
@@ -56,6 +57,8 @@ class PumpManager:
             if end_time == "now":
                 end_time = (datetime.utcnow()).strftime('%Y-%m-%dT%H:%M:%SZ')
 
+            if config['general'].get('delay'):
+                sleep(int(config['general'].get('delay')))
             start_time = self.update_time
             while datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ') < datetime.strptime(end_time,
                                                                                           '%Y-%m-%dT%H:%M:%SZ'):
