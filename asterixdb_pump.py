@@ -103,7 +103,6 @@ class PumpManager:
             "statement": sql,
             "format": "application/x-adm"}
 
-        print(config['general']['proxy'], type(config['general']['proxy']), bool(config['general']['proxy']))
         proxies = {
             'http': config['general']['proxy']
         } if config['general']['proxy'] else {}
