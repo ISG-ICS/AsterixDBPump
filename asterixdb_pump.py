@@ -5,7 +5,7 @@ import os
 import re
 import shelve
 import urllib.parse
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 import requests
@@ -56,14 +56,24 @@ class PumpManager:
             if end_time == "now":
                 end_time = (datetime.utcnow()).strftime('%Y-%m-%dT%H:%M:%SZ')
 
-            data = self.pull_from_asterixdb(scheme=src.get('scheme'), host=src.get('host'), port=src.get('port'),
-                                            start_time=self.update_time, end_time=end_time)
-            if eval(config['general']['persist_to_disk']):
-                self.persist_to_disk(data, config['general']['persistence_path'])
-            self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
-            self.update_time = end_time
-            self.update_count += len(data)
-            logging.info(self)
+            start_time = self.update_time
+            while datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ') < datetime.strptime(end_time,
+                                                                                          '%Y-%m-%dT%H:%M:%SZ'):
+                period_end_time = (datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)).strftime(
+                    '%Y-%m-%dT%H:%M:%SZ')
+                if datetime.strptime(period_end_time, '%Y-%m-%dT%H:%M:%SZ') < datetime.strptime(
+                        end_time, '%Y-%m-%dT%H:%M:%SZ'):
+                    period_end_time = end_time
+                data = self.pull_from_asterixdb(scheme=src.get('scheme'), host=src.get('host'), port=src.get('port'),
+                                                start_time=start_time, end_time=period_end_time)
+                if eval(config['general']['persist_to_disk']):
+                    self.persist_to_disk(data, config['general']['persistence_path'])
+                self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
+                self.update_time = end_time
+                self.update_count += len(data)
+                logging.info(self)
+                self.update_time = start_time
+                start_time = period_end_time
         except Exception as e:
             logging.error(e)
 
@@ -93,6 +103,7 @@ class PumpManager:
             "statement": sql,
             "format": "application/x-adm"}
 
+        print(config['general']['proxy'], type(config['general']['proxy']), bool(config['general']['proxy']))
         proxies = {
             'http': config['general']['proxy']
         } if config['general']['proxy'] else {}
