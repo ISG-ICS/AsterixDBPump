@@ -1,0 +1,49 @@
+# source db, pull from it
+[asterixdb_src]
+host =
+port =
+scheme =
+
+# destination db, push to it. Currently only works with localhost
+[asterixdb_dest]
+host = localhost
+port =
+
+# query to execute in pulling data
+[selection_query]
+# if True, then will append a time window in the query condition. Else, it will run the query for one time.
+incremental = True
+
+# default start_time, if starting from fresh, or `restart` below is set to be True, will be used for start_time
+# for repeated runs, it will use the time saved from previous run as start_time.
+start_time = 2020-01-01T00:00:00Z
+
+# target end_time, could be `now` or a specific time stamp.
+;end_time = 2020-01-03T00:00:00Z
+end_time = now
+
+# if restart is True, it will restart from the `start_time` defined about, ignoring previous runs.
+restart = True
+
+# - only selection query is allowed
+
+# - if it is an incremental query:
+#    -- a `where` must present in query, you can use `where true` in no condition is needed
+#    -- a <time-window> tag must present in the query to denote the locate to replace time window conditions.
+#    -- table alisa name should be `t` and has a `create_at` column, to make time window work with `t.create_at`
+
+#   minimal example:
+sql = select value t from twitter.ds_tweet t where true <time-window>
+
+# if it is not an incremental query, it will be run directly without modification.
+# no need to have <time-window> tag, or even a where clause.
+# a non-incremental sql example:
+;sql = select value t from twitter.ds_tweet t limit 10
+
+[general]
+# remove previous history before start.
+clean_history = False
+
+# if need to save a copy to persistence_path
+persist_to_disk = True
+persistence_path = persistence/data.adm

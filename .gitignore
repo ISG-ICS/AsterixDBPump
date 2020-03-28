@@ -1,0 +1,10 @@
+venv/
+logs/
+persistence/
+.idea/
+
+**/*.pyc
+config/*.ini
+
+.python-version
+.DS_Store
