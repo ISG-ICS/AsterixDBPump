@@ -61,7 +61,7 @@ class PumpManager:
                                                                                           '%Y-%m-%dT%H:%M:%SZ'):
                 period_end_time = (datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%SZ') + timedelta(days=1)).strftime(
                     '%Y-%m-%dT%H:%M:%SZ')
-                if datetime.strptime(period_end_time, '%Y-%m-%dT%H:%M:%SZ') < datetime.strptime(
+                if datetime.strptime(period_end_time, '%Y-%m-%dT%H:%M:%SZ') > datetime.strptime(
                         end_time, '%Y-%m-%dT%H:%M:%SZ'):
                     period_end_time = end_time
                 data = self.pull_from_asterixdb(scheme=src.get('scheme'), host=src.get('host'), port=src.get('port'),
