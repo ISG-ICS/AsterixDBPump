@@ -69,11 +69,11 @@ class PumpManager:
                 if eval(config['general']['persist_to_disk']):
                     self.persist_to_disk(data, config['general']['persistence_path'])
                 self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
-                self.update_time = end_time
+                self.last_update_time = self.update_time
+                self.update_time = period_end_time
                 self.update_count += len(data)
                 logging.info(self)
-                self.update_time = start_time
-                start_time = period_end_time
+                start_time = self.update_time
         except Exception as e:
             logging.error(e)
 
