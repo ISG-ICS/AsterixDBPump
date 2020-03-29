@@ -13,5 +13,13 @@ You have already have twitter.ds_tweet setup on both source and destination Aste
 ### Install dependencies:
 `pip install -r requirements.txt`
 
+
+### Config
+modify `config/pump_conf.ini`:
+- change source and destination db ip
+- change your start_time and end_time
+- indicate your running mode: incremental or one-time
+- specify your sql
+
 ### Run:
-`python3 tweet_pump.py`
+`python3 asterixdb_pump.py`
