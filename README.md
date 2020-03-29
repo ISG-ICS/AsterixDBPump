@@ -5,7 +5,7 @@ This tool retrieves data from a source AsterixDB, and ingest into a destination 
 For now it is builtin supporting twitter.ds_tweet. 
 
 ### Assumptions:
-You have already have twitter.ds_tweet and TweetFeed setup on both source and destination AsterixDB.
+You have already have twitter.ds_tweet setup on both source and destination AsterixDB. Also TweetFeed should be enabled on the destination side.
 
 ### Requirements:
  - python@3.6+
