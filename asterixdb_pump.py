@@ -93,7 +93,7 @@ class PumpManager:
         incremental = eval(config['selection_query']['incremental'])
         logging.info(f"RUNNING in {'incremental' if incremental else 'one time'} mode")
 
-        sql = config['selection_query']['sql'].lower()
+        sql = config['selection_query']['sql']
         logging.info(f"SQL read from config: \n{sql}")
         if incremental:
             assert "select" in sql, "NOT a SELECT query"
