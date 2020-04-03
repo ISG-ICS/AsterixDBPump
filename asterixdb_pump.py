@@ -93,11 +93,11 @@ class PumpManager:
         incremental = eval(config['selection_query']['incremental'])
         logging.info(f"RUNNING in {'incremental' if incremental else 'one time'} mode")
 
-        sql = config['selection_query']['sql'].lower()
+        sql = config['selection_query']['sql']
         logging.info(f"SQL read from config: \n{sql}")
         if incremental:
-            assert "select" in sql, "NOT a SELECT query"
-            assert 'where' in sql, "NO WHERE clause found"
+            assert re.search(re.compile(r'\s*(SELECT).*', re.IGNORECASE), sql), "NOT a SELECT query"
+            assert re.search(re.compile(r'.*(WHERE).*', re.IGNORECASE), sql), "NO WHERE clause found"
             assert '<time-window>' in sql, "NO <time-window> found"
             sql = sql.replace("<time-window>",
                               f" AND t.create_at >= datetime({repr(start_time)}) AND t.create_at < datetime({repr(end_time)})")
