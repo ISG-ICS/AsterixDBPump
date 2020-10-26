@@ -48,6 +48,9 @@ clean_history = False
 persist_to_disk = True
 persistence_path = persistence/data.adm
 
+# if need to push to dest AsterixDB, by default True
+push_to_dest = True
+
 # proxy if needed
 proxy =
 

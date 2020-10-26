@@ -74,7 +74,8 @@ class PumpManager:
         data = self.pull_from_asterixdb(scheme=src.get('scheme'), host=src.get('host'), port=src.get('port'))
         if eval(general.get('persist_to_disk')):
             self.persist_to_disk(data, general.get('persistence_path'))
-        self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
+        if eval(general.get('push_to_dest')):
+            self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
         self.last_update_count = self.update_count
         self.update_count += len(data)
         logging.info(self)
@@ -90,7 +91,8 @@ class PumpManager:
                                             start_time=period_start_time, end_time=period_end_time)
             if eval(general.get('persist_to_disk')):
                 self.persist_to_disk(data, general.get('persistence_path'))
-            self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
+            if eval(general.get('push_to_dest')):
+                self.push_to_asterixdb(data, dest.get('host'), dest.get('port'))
             self.last_update_time = self.update_time
             self.update_time = period_end_time
             self.last_update_count = self.update_count
