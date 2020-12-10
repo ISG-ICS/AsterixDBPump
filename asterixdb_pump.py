@@ -65,7 +65,7 @@ class PumpManager:
                 self._pre_run_delay(general)
                 self._time_looped_pump(src, dest, general, datefmt, end_time)
             else:
-                self._one_time_pump(src, dest, config)
+                self._one_time_pump(src, dest, general)
 
         except Exception as e:
             logging.error(e)
